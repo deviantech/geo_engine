@@ -10,8 +10,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Kali Donovan"]
   s.email       = ["kali@deviantech.com"]
   s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of Geo."
-  s.description = "TODO: Description of Geo."
+  s.summary     = "Shareable geo structure from geonames"
+  s.description = "Shareable geo structure from geonames: Continent, Country, Region, District, City."
   s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
@@ -19,5 +19,6 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", "~> 4.2.3"
 
+  s.add_development_dependency "ruby-progressbar", '~> 1.7.5'
   s.add_development_dependency "sqlite3"
 end

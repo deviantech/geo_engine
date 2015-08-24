@@ -2,11 +2,11 @@ namespace :geo do
 
   namespace :import do
 
-    def city_zip; 'db/data/cities.zip'; end
-    def city_raw; 'db/data/cities15000.txt'; end
-    def country_raw; 'db/data/countryInfo.txt'; end
-    def region_raw; 'db/data/regions.txt'; end
-    def district_raw; 'db/data/districts.txt'; end
+    def city_zip; 'tmp/geo/cities.zip'; end
+    def city_raw; 'tmp/geo/cities15000.txt'; end
+    def country_raw; 'tmp/geo/countryInfo.txt'; end
+    def region_raw; 'tmp/geo/regions.txt'; end
+    def district_raw; 'tmp/geo/districts.txt'; end
 
     def import_for(klass)
       name  = klass.name.split('::').last
@@ -24,6 +24,8 @@ namespace :geo do
     end
 
     task download: :environment do
+      FileUtils.mkdir_p( File.dirname(city_zip) )
+
       unless File.exists?(city_raw)
         `curl -o #{city_zip} http://download.geonames.org/export/dump/cities15000.zip` unless File.exists?(city_zip)
         `cd #{File.dirname(city_zip)} && unzip #{File.basename(city_zip)}`
@@ -36,7 +38,7 @@ namespace :geo do
       `curl -o #{district_raw} http://download.geonames.org/export/dump/admin2Codes.txt` unless File.exists?(district_raw)
     end
 
-    task :continents do
+    task continents: :environment do
       Geo::Continent.delete_all
 
       {AF: 'Africa', AS: 'Asia', EU: 'Europe', NA: 'North America', OC: 'Oceania', SA: 'South America', AN: 'Antarctica'}.each do |code, name|
@@ -76,7 +78,7 @@ namespace :geo do
       end
     end
 
-    task cities: :districts do
+    task cities: [:regions, :districts] do
       # g.geonameid = data[0]
       # g.name = data[1]
       # g.asciiname = data[2]
@@ -103,7 +105,7 @@ namespace :geo do
           puts "#{data[2]} - Found no matching region for '#{region_code}' in country #{country_code}\n"
         end
 
-        district_base = region ? region.districts : District
+        district_base = region ? region.districts : Geo::District
         unless district_code.blank?
           unless district = district_base.find_by(code: district_code, country_code: country_code)
             puts "#{data[2]} - Found no matching district for '#{district_code}' in country #{country_code} (region: #{region_code})\n"

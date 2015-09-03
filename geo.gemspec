@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.version     = Geo::VERSION
   s.authors     = ["Kali Donovan"]
   s.email       = ["kali@deviantech.com"]
-  s.homepage    = "TODO"
+  # s.homepage    = "TODO"
   s.summary     = "Shareable geo structure from geonames"
   s.description = "Shareable geo structure from geonames: Continent, Country, Region, District, City."
   s.license     = "MIT"

@@ -11,10 +11,12 @@ Rails.application.routes.draw do
     end
   end
 
-  namespace :geo do
-    concerns :geo
-    resources :continents, only: [:index], concerns: :geo do
-      get :all, on: :collection
+  scope :api do
+    namespace :geo do
+      concerns :geo
+      resources :continents, only: [:index], concerns: :geo do
+        get :all, on: :collection
+      end
     end
   end
 

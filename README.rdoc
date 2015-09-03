@@ -1,3 +1,21 @@
 = Geo
 
+=== Installation
+
+In your gemfile:
+
+  gem 'geo'
+
+Then run:
+
+  rake geo:install:migrations
+  rake db:migrate
+
+Then to pull down and import data from geonames.org:
+
+  rake geo:import:all
+
+
+You'll then be able to access the routes as /api/geo/xxx (e.g. /api/geo/continents.json)
+
 This project rocks and uses MIT-LICENSE.
